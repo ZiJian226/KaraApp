@@ -14,10 +14,27 @@ export default function SubmitPage() {
   const [success, setSuccess] = useState(false)
 
   const detectPlatform = (url: string): 'youtube' | 'spotify' | 'soundcloud' | null => {
-    if (url.includes('youtube.com') || url.includes('youtu.be')) return 'youtube'
-    if (url.includes('spotify.com')) return 'spotify'
-    if (url.includes('soundcloud.com')) return 'soundcloud'
-    return null
+    try {
+      const urlObj = new URL(url)
+      const hostname = urlObj.hostname.toLowerCase()
+      
+      if (hostname === 'youtube.com' || hostname === 'www.youtube.com' || 
+          hostname === 'youtu.be' || hostname === 'www.youtu.be' ||
+          hostname === 'm.youtube.com') {
+        return 'youtube'
+      }
+      if (hostname === 'spotify.com' || hostname === 'www.spotify.com' ||
+          hostname === 'open.spotify.com') {
+        return 'spotify'
+      }
+      if (hostname === 'soundcloud.com' || hostname === 'www.soundcloud.com' ||
+          hostname === 'm.soundcloud.com') {
+        return 'soundcloud'
+      }
+      return null
+    } catch {
+      return null
+    }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
